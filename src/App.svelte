@@ -1,29 +1,28 @@
 <script>
   import Header from './Header.svelte';
   import Footer from './Footer.svelte';
+  import Login from './Login.svelte';
 </script>
 
-<main>
-  <Header />
-  <h1>NHL Scoring Leaders</h1>
-  <p>Login</p>
-</main>
-
+<Header />
+<div class="content">
+  <main>
+    <Login />
+  </main>
+</div>
 <Footer />
 
 <style>
-  main {
-    text-align: center;
+  .content {
+    max-width: 50%;
+    margin: 0 auto;
     padding: 1em;
+    text-align: center;
+    background-color: gray;
+  }
+  main {
     max-width: 240px;
     margin: 0 auto;
-  }
-
-  h1 {
-    color: #ff3e00;
-    text-transform: uppercase;
-    font-size: 4em;
-    font-weight: 100;
   }
 
   @media (min-width: 640px) {

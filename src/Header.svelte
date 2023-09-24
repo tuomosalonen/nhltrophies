@@ -3,6 +3,7 @@
 
 <div class="header">
   <img class="logo" src="nhllogo.png" alt="The NHL logo" />
+  <h1>NHL Scoring Leaders</h1>
 </div>
 
 <style>
@@ -12,6 +13,7 @@
       sans-serif;
     align-items: center;
     justify-content: center;
+    background-color: gray;
   }
 
   .logo {
