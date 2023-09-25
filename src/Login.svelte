@@ -1,14 +1,16 @@
-<script></script>
+<script>
+  export let logIn;
+</script>
 
 <form action="login">
   <div class="container">
     <label for="uname"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="uname" required />
+    <input type="text" placeholder="Enter Username" name="uname" />
 
     <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required />
+    <input type="password" placeholder="Enter Password" name="psw" />
 
-    <button type="submit">Login</button>
+    <button on:click={logIn} type="submit">Login</button>
   </div>
 </form>
 
