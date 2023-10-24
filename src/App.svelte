@@ -3,14 +3,21 @@
   import Footer from './Footer.svelte';
   import Login from './Login.svelte';
   import Main from './Main.svelte';
+  import Registration from './Registration.svelte';
   import { onMount } from 'svelte';
 
   let loginok = false;
-  let isLoading = true;
   let selectedTrophyIndex = 0;
+  let registering = false;
 
   const logIn = () => {
+    alert('loggaa');
     loginok = !loginok;
+  };
+
+  const register = () => {
+    alert('rekkaa');
+    registering = !registering;
   };
 
   const previous = () => {
@@ -33,7 +40,6 @@
 
       const data = await response.json();
       awards = data.awards;
-      isLoading = false;
 
       console.log(data);
     } catch (error) {
@@ -46,7 +52,9 @@
 <div class="content">
   <main>
     {#if !loginok}
-      <Login {logIn} />
+      <Login {logIn} {register} />
+    {:else if registering}
+      <Registration {register} />
     {:else}
       <Main
         {selectedTrophyIndex}

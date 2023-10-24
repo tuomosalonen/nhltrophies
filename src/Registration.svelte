@@ -1,20 +1,15 @@
 <script>
-  export let logIn;
-  export let register;
 </script>
 
 <form action="login">
   <div class="container">
-    <label for="uname"><b>Username</b></label>
+    <label for="uname"><b>Choose username</b></label>
     <input type="text" placeholder="Enter Username" name="uname" />
 
-    <label for="psw"><b>Password</b></label>
+    <label for="psw"><b>Choose password</b></label>
     <input type="password" placeholder="Enter Password" name="psw" />
 
-    <button on:click={logIn} type="submit">Login</button>
-    <div class="register">
-      <button on:click={register}>New user? Register here!</button>
-    </div>
+    <button on:click type="submit">Create user</button>
   </div>
 </form>
 
@@ -45,10 +40,5 @@
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
-  }
-
-  .register {
-    padding-top: 10px;
-    color: orangered;
   }
 </style>

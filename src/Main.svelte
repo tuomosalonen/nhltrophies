@@ -5,11 +5,11 @@
   export let awards;
   export let selectedTrophyIndex;
 
-  const handlePrevious = () => {
+  const previousButton = () => {
     dispatch('previous');
   };
 
-  const handleNext = () => {
+  const nextButton = () => {
     dispatch('next');
   };
 </script>
@@ -20,9 +20,9 @@
   <div>
     <img src={awards[selectedTrophyIndex].imageUrl} alt="nhllogo.png" />
   </div>
-  <button on:click={handlePrevious}>Previous</button>
+  <button on:click={previousButton}>Previous</button>
 
-  <button on:click={handleNext}> Next</button>
+  <button on:click={nextButton}> Next</button>
 </div>
 
 <style>
