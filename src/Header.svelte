@@ -3,7 +3,7 @@
 
 <div class="header">
   <img class="logo" src="nhllogo.png" alt="The NHL logo" />
-  <h1>NHL Scoring Leaders</h1>
+  <h1>NHL Trophies</h1>
 </div>
 
 <style>

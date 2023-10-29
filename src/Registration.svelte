@@ -1,24 +1,61 @@
 <script>
+  import { createEventDispatcher } from 'svelte';
+
+  const dispatch = createEventDispatcher();
+
+  let username = '';
+  let password = '';
+  let confirmPassword = '';
+  let registered = false;
+  let error = '';
+
+  const handleRegistration = () => {
+    if (password === confirmPassword && username !== '' && password !== '') {
+      console.log('Registration successful');
+      registered = true;
+      dispatch('registrationSuccess', { username, password });
+    } else {
+      error = 'Passwords do not match, or some fields are empty.';
+    }
+  };
+
+  $: console.log(username, password);
 </script>
 
-<form action="login">
-  <div class="container">
-    <label for="uname"><b>Choose username</b></label>
-    <input type="text" placeholder="Enter Username" name="uname" />
+<div class="container">
+  <label for="uname"><b>Choose username</b></label>
+  <input
+    bind:value={username}
+    type="text"
+    placeholder="Enter Username"
+    name="uname"
+  />
 
-    <label for="psw"><b>Choose password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" />
+  <label for="psw"><b>Choose password</b></label>
+  <input
+    bind:value={password}
+    type="password"
+    placeholder="Enter Password"
+    name="psw"
+  />
 
-    <button on:click type="submit">Create user</button>
-  </div>
-</form>
+  <label for="confirmPassword">Confirm Password:</label>
+  <input type="password" bind:value={confirmPassword} />
+
+  <button on:click={handleRegistration} type="button">Create user</button>
+
+  {#if error}
+    <p>{error}</p>
+  {/if}
+
+  {#if registered}
+    <p>Registration successful. You can now log in.</p>
+  {/if}
+</div>
 
 <style>
-  form {
-    text-align: center;
-  }
-
   .container {
+    text-align: center;
     max-width: 300px; /* Adjust the max-width as needed */
     margin: 0 auto;
     padding: 1em;

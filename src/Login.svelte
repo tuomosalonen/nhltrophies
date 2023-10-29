@@ -1,29 +1,58 @@
 <script>
-  export let logIn;
+  import { loggedIn } from './stateStore.js';
+  import { onMount } from 'svelte';
+
   export let register;
+  export let registeredUsername;
+  export let registeredPassword;
+
+  let username = '';
+  let password = '';
+
+  onMount(() => {
+    const unsubscribe = loggedIn.subscribe((value) => {
+      console.log('loggedIn is ' + value); // The value of loggedIn when the component is mounted
+    });
+
+    return unsubscribe;
+  });
+
+  const handleLogin = () => {
+    if (username === registeredUsername && password === registeredPassword) {
+      alert('Login successful');
+      loggedIn.set(true); // Setting the value of loggedIn to true upon successful login
+    } else {
+      alert('Virhe');
+    }
+  };
 </script>
 
-<form action="login">
-  <div class="container">
-    <label for="uname"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="uname" />
+<div class="container">
+  <label for="uname"><b>Username</b></label>
+  <input
+    bind:value={username}
+    type="text"
+    placeholder="Enter Username"
+    name="uname"
+  />
 
-    <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" />
+  <label for="psw"><b>Password</b></label>
+  <input
+    bind:value={password}
+    type="password"
+    placeholder="Enter Password"
+    name="psw"
+  />
 
-    <button on:click={logIn} type="submit">Login</button>
-    <div class="register">
-      <button on:click={register}>New user? Register here!</button>
-    </div>
+  <button on:click={handleLogin} type="submit">Login</button>
+  <div class="register">
+    <button on:click={register}>New user? Register here!</button>
   </div>
-</form>
+</div>
 
 <style>
-  form {
-    text-align: center;
-  }
-
   .container {
+    text-align: center;
     max-width: 300px; /* Adjust the max-width as needed */
     margin: 0 auto;
     padding: 1em;

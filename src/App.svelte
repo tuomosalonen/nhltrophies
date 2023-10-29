@@ -1,30 +1,46 @@
 <script>
   import Header from './Header.svelte';
-  import Footer from './Footer.svelte';
   import Login from './Login.svelte';
   import Main from './Main.svelte';
   import Registration from './Registration.svelte';
   import { onMount } from 'svelte';
+  import { loggedIn, login, logout } from './stateStore.js';
 
-  let loginok = false;
-  let selectedTrophyIndex = 0;
-  let registering = false;
+  let registered = false;
+  let loggedInState;
 
-  const logIn = () => {
-    alert('loggaa');
-    loginok = !loginok;
-  };
+  onMount(() => {
+    loggedIn.subscribe((value) => {
+      loggedInState = value;
+    });
+  });
+
+  let showRegForm = false;
+
+  let registeredUsername = '';
+  let registeredPassword = '';
 
   const register = () => {
-    alert('rekkaa');
-    registering = !registering;
+    showRegForm = !showRegForm;
+    console.log('showRegForm is ' + showRegForm);
   };
 
-  const previous = () => {
-    if (selectedTrophyIndex > 0) selectedTrophyIndex--;
+  const handleRegistrationSuccess = (event) => {
+    const { detail } = event;
+    registeredUsername = detail.username;
+    registeredPassword = detail.password;
+    setTimeout(() => {
+      showRegForm = false;
+      registered = true;
+    }, 3000);
   };
-  const next = () => {
-    if (selectedTrophyIndex < awards.length - 1) selectedTrophyIndex++;
+
+  const updateLoggedInState = (value) => {
+    if (value) {
+      login();
+    } else {
+      logout();
+    }
   };
 
   let awards = [];
@@ -51,21 +67,15 @@
 <Header />
 <div class="content">
   <main>
-    {#if !loginok}
-      <Login {logIn} {register} />
-    {:else if registering}
-      <Registration {register} />
+    {#if showRegForm}
+      <Registration on:registrationSuccess={handleRegistrationSuccess} />
+    {:else if registered && loggedInState}
+      <Main {awards} />
     {:else}
-      <Main
-        {selectedTrophyIndex}
-        {awards}
-        on:previous={previous}
-        on:next={next}
-      />
+      <Login {register} {registeredUsername} {registeredPassword} />
     {/if}
   </main>
 </div>
-<Footer />
 
 <style>
   .content {

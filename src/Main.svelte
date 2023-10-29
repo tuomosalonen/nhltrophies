@@ -1,34 +1,49 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
-  const dispatch = createEventDispatcher();
+  import { fade } from 'svelte/transition';
+  import { logout } from './stateStore';
 
   export let awards;
-  export let selectedTrophyIndex;
+  export let selectedAward;
 
-  const previousButton = () => {
-    dispatch('previous');
+  let awardInfo = {};
+
+  const handleSelection = () => {
+    awardInfo = awards.find((award) => award.name === selectedAward);
+
+    console.log(selectedAward);
   };
 
-  const nextButton = () => {
-    dispatch('next');
+  const handleLogout = () => {
+    alert('Logged out');
+    logout();
   };
 </script>
 
 <div class="container">
-  <h1>Awards</h1>
-  <div>{awards[selectedTrophyIndex].name}</div>
   <div>
-    <img src={awards[selectedTrophyIndex].imageUrl} alt="nhllogo.png" />
+    <select bind:value={selectedAward} on:change={handleSelection}>
+      <option value="">Select a trophy</option>
+      {#each awards as award}
+        <option value={award.name}>{award.name}</option>p
+      {/each}
+    </select>
   </div>
-  <button on:click={previousButton}>Previous</button>
 
-  <button on:click={nextButton}> Next</button>
+  {#if Object.keys(awardInfo).length !== 0}
+    <div>
+      <h2>{awardInfo.name}</h2>
+      <img transition:fade src={awardInfo.imageUrl} alt="Trophy" />
+      <p>{awardInfo.description}</p>
+      <!-- Add other relevant details here -->
+    </div>
+  {/if}
+
+  <div class="home"><button on:click={handleLogout}>Log out</button></div>
 </div>
 
 <style>
   .container {
-    width: 300px; /* Adjust the max-width as needed */
-    height: 25rem;
+    /* Adjust the max-width as needed */
     margin: 0 auto;
     padding: 1em;
     background-color: rgb(173, 168, 168);
