@@ -1,5 +1,7 @@
 <script>
+  import TextInput from './TextInput.svelte';
   import { createEventDispatcher } from 'svelte';
+  import { fade } from 'svelte/transition';
 
   const dispatch = createEventDispatcher();
 
@@ -8,48 +10,65 @@
   let confirmPassword = '';
   let registered = false;
   let error = '';
+  let formSubmitted = false;
+
+  $: validUsername = username.length > 5;
+  $: validPassword = password.length > 5;
 
   const handleRegistration = () => {
-    if (password === confirmPassword && username !== '' && password !== '') {
-      console.log('Registration successful');
+    formSubmitted = true;
+    if (password === confirmPassword && validUsername && validPassword) {
       registered = true;
       dispatch('registrationSuccess', { username, password });
     } else {
-      error = 'Passwords do not match, or some fields are empty.';
+      error = 'There was a problem with one or more fields.';
     }
   };
-
-  $: console.log(username, password);
 </script>
 
-<div class="container">
-  <label for="uname"><b>Choose username</b></label>
-  <input
-    bind:value={username}
-    type="text"
-    placeholder="Enter Username"
-    name="uname"
-  />
+<div class="container" transition:fade>
+  <form on:submit|preventDefault={handleRegistration}>
+    <TextInput
+      id="uname"
+      label="Username"
+      placeholder="Enter username"
+      valid={validUsername}
+      errmsg={formSubmitted && !validUsername
+        ? 'Username must be at least 6 characters'
+        : ''}
+      bind:value={username}
+    />
+    <TextInput
+      type="password"
+      label="Password"
+      placeholder="Enter password"
+      valid={validPassword}
+      errmsg={formSubmitted && !validPassword
+        ? 'Password must be at least 6 characters'
+        : ''}
+      bind:value={password}
+    />
 
-  <label for="psw"><b>Choose password</b></label>
-  <input
-    bind:value={password}
-    type="password"
-    placeholder="Enter Password"
-    name="psw"
-  />
+    <TextInput
+      type="password"
+      label="Confirm password"
+      placeholder="Retype password"
+      valid={validPassword}
+      errmsg={formSubmitted && password !== confirmPassword
+        ? 'Passwords must match'
+        : ''}
+      bind:value={confirmPassword}
+    />
 
-  <label for="confirmPassword">Confirm Password:</label>
-  <input type="password" bind:value={confirmPassword} />
-
-  <button on:click={handleRegistration} type="button">Create user</button>
+    <button on:click={handleRegistration} type="submit">Create user</button>
+  </form>
 
   {#if error}
-    <p>{error}</p>
+    <p class="error">{error}</p>
   {/if}
 
   {#if registered}
-    <p>Registration successful. You can now log in.</p>
+    <p class="success">Registration successful!</p>
   {/if}
 </div>
 
@@ -63,19 +82,11 @@
     border-radius: 5px; /* Optional: Add rounded corners to the container */
   }
 
-  label {
-    display: block; /* Display labels on separate lines */
-    margin-bottom: 8px; /* Add some space between labels and input fields */
-    float: left;
+  .success {
+    color: green;
   }
 
-  input[type='text'],
-  input[type='password'] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
+  .error {
+    color: red;
   }
 </style>

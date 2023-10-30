@@ -4,7 +4,7 @@
   import Main from './Main.svelte';
   import Registration from './Registration.svelte';
   import { onMount } from 'svelte';
-  import { loggedIn, login, logout } from './stateStore.js';
+  import { loggedIn } from './stateStore.js';
 
   let registered = false;
   let loggedInState;
@@ -22,7 +22,6 @@
 
   const register = () => {
     showRegForm = !showRegForm;
-    console.log('showRegForm is ' + showRegForm);
   };
 
   const handleRegistrationSuccess = (event) => {
@@ -32,16 +31,10 @@
     setTimeout(() => {
       showRegForm = false;
       registered = true;
-    }, 3000);
+    }, 2000);
   };
 
-  const updateLoggedInState = (value) => {
-    if (value) {
-      login();
-    } else {
-      logout();
-    }
-  };
+  $: console.log('Registered with username ' + registeredUsername);
 
   let awards = [];
 
@@ -70,7 +63,7 @@
     {#if showRegForm}
       <Registration on:registrationSuccess={handleRegistrationSuccess} />
     {:else if registered && loggedInState}
-      <Main {awards} />
+      <Main {awards} {registeredUsername} />
     {:else}
       <Login {register} {registeredUsername} {registeredPassword} />
     {/if}

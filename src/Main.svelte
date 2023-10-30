@@ -1,9 +1,10 @@
 <script>
+  import Statusbox from './Statusbox.svelte';
   import { fade } from 'svelte/transition';
-  import { logout } from './stateStore';
 
   export let awards;
   export let selectedAward;
+  export let registeredUsername;
 
   let awardInfo = {};
 
@@ -12,14 +13,13 @@
 
     console.log(selectedAward);
   };
-
-  const handleLogout = () => {
-    alert('Logged out');
-    logout();
-  };
 </script>
 
-<div class="container">
+<div class="content">
+  <Statusbox loggedInUser={registeredUsername} />
+  <!-- Other content here -->
+</div>
+<div transition:fade class="container">
   <div>
     <select bind:value={selectedAward} on:change={handleSelection}>
       <option value="">Select a trophy</option>
@@ -37,8 +37,6 @@
       <!-- Add other relevant details here -->
     </div>
   {/if}
-
-  <div class="home"><button on:click={handleLogout}>Log out</button></div>
 </div>
 
 <style>
@@ -48,6 +46,7 @@
     padding: 1em;
     background-color: rgb(173, 168, 168);
     border-radius: 20px; /* Optional: Add rounded corners to the container */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   }
 
   img {

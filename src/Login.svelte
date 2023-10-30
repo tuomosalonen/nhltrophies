@@ -1,4 +1,5 @@
 <script>
+  import TextInput from './TextInput.svelte';
   import { loggedIn } from './stateStore.js';
   import { onMount } from 'svelte';
 
@@ -9,6 +10,9 @@
   let username = '';
   let password = '';
 
+  let loginSuccess = false;
+  let error = '';
+
   onMount(() => {
     const unsubscribe = loggedIn.subscribe((value) => {
       console.log('loggedIn is ' + value); // The value of loggedIn when the component is mounted
@@ -18,66 +22,89 @@
   });
 
   const handleLogin = () => {
-    if (username === registeredUsername && password === registeredPassword) {
-      alert('Login successful');
-      loggedIn.set(true); // Setting the value of loggedIn to true upon successful login
+    if (
+      username === registeredUsername &&
+      password === registeredPassword &&
+      username !== '' &&
+      password !== ''
+    ) {
+      setTimeout(() => {
+        loggedIn.set(true);
+        loginSuccess = true;
+        setTimeout(() => {}, 2000);
+      }, 2000);
     } else {
-      alert('Virhe');
+      error = 'Invalid username or password';
     }
   };
+
+  $: console.log('Username is ' + username);
+  $: console.log('Registered username is ' + registeredUsername);
 </script>
 
 <div class="container">
-  <label for="uname"><b>Username</b></label>
-  <input
-    bind:value={username}
-    type="text"
-    placeholder="Enter Username"
-    name="uname"
-  />
+  {#if error}
+    <p class="error">{error}</p>
+  {/if}
 
-  <label for="psw"><b>Password</b></label>
-  <input
-    bind:value={password}
-    type="password"
-    placeholder="Enter Password"
-    name="psw"
-  />
+  {#if loginSuccess}
+    <p class="success">Login successful!</p>
+  {/if}
+  <form on:submit|preventDefault={handleLogin}>
+    <TextInput
+      id="uname"
+      label="Username"
+      placeholder="Enter username"
+      errmsg="Invalid username"
+      bind:value={username}
+    />
+    <TextInput
+      type="password"
+      label="Password"
+      placeholder="Enter password"
+      errmsg="Invalid password"
+      bind:value={password}
+    />
 
-  <button on:click={handleLogin} type="submit">Login</button>
-  <div class="register">
-    <button on:click={register}>New user? Register here!</button>
-  </div>
+    <button on:click={handleLogin} type="submit">Login</button>
+    <div class="link-button">
+      <button on:click={register}>New user? Register here!</button>
+    </div>
+  </form>
 </div>
 
 <style>
   .container {
     text-align: center;
-    max-width: 300px; /* Adjust the max-width as needed */
+    max-width: 300px;
     margin: 0 auto;
     padding: 1em;
     background-color: rgb(173, 168, 168);
-    border-radius: 5px; /* Optional: Add rounded corners to the container */
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   }
 
-  label {
-    display: block; /* Display labels on separate lines */
-    margin-bottom: 8px; /* Add some space between labels and input fields */
-    float: left;
+  .link-button {
+    background: none;
+    border: none;
+    color: #ffcb00; /* or your desired link color */
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    cursor: pointer;
+    transition: font-size 0.3s ease-in-out, color 0.3s ease-in-out,
+      text-decoration 0.3s ease-in-out;
   }
 
-  input[type='text'],
-  input[type='password'] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
+  .link-button:hover {
+    color: #ffffff;
   }
 
-  .register {
-    padding-top: 10px;
-    color: orangered;
+  .error {
+    color: red;
+  }
+
+  .success {
+    color: green;
   }
 </style>
