@@ -1,10 +1,11 @@
 <script>
-  import Header from './Header.svelte';
+  import Header from './Header.svelte'; //Importataan tarvittavat komponentit
   import Login from './Login.svelte';
   import Main from './Main.svelte';
+
   import Registration from './Registration.svelte';
-  import { onMount } from 'svelte';
-  import { loggedIn } from './stateStore.js';
+  import { onMount } from 'svelte'; //Importataan Svelten onMount-elinkaarifunktio
+  import { loggedIn } from './stateStore.js'; //Importataan store
 
   let registered = false;
   let loggedInState;
@@ -21,24 +22,26 @@
   let registeredPassword = '';
 
   const register = () => {
+    //määrittelee näytetäänkö rekisteröintilomake
     showRegForm = !showRegForm;
   };
 
   const handleRegistrationSuccess = (event) => {
-    const { detail } = event;
+    //Funktio joka käsittelee onnistuneen rekisteröitymisen
+    const { detail } = event; //Registration-komponentissa luotu registrationSuccess-tapahtuma välitetään tänne
     registeredUsername = detail.username;
     registeredPassword = detail.password;
+    //odottaa 2 sekuntia jonka jälkeen rekisteröitymislomaketta ei enää näytetä
     setTimeout(() => {
       showRegForm = false;
       registered = true;
     }, 2000);
   };
 
-  $: console.log('Registered with username ' + registeredUsername);
-
   let awards = [];
 
   onMount(async () => {
+    //onMount-funktio, jolla haetaan dataa apiUrl-linkin takaa
     const apiUrl = 'https://statsapi.web.nhl.com/api/v1/awards/';
 
     try {
@@ -60,6 +63,7 @@
 <Header />
 <div class="content">
   <main>
+    <!--If-lohkossa määritellään mikä komponentti renderöidään-->
     {#if showRegForm}
       <Registration on:registrationSuccess={handleRegistrationSuccess} />
     {:else if registered && loggedInState}

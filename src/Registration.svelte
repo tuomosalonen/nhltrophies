@@ -1,4 +1,6 @@
 <script>
+  import Button from './Button.svelte';
+  import Modal from './Modal.svelte';
   import TextInput from './TextInput.svelte';
   import { createEventDispatcher } from 'svelte';
   import { fade } from 'svelte/transition';
@@ -39,6 +41,7 @@
       bind:value={username}
     />
     <TextInput
+      id="registerpassword"
       type="password"
       label="Password"
       placeholder="Enter password"
@@ -50,6 +53,7 @@
     />
 
     <TextInput
+      id="confirmpassword"
       type="password"
       label="Confirm password"
       placeholder="Retype password"
@@ -59,8 +63,7 @@
         : ''}
       bind:value={confirmPassword}
     />
-
-    <button on:click={handleRegistration} type="submit">Create user</button>
+    <Button text="Create user" on:click={handleRegistration} />
   </form>
 
   {#if error}
@@ -68,18 +71,18 @@
   {/if}
 
   {#if registered}
-    <p class="success">Registration successful!</p>
+    <Modal />
   {/if}
 </div>
 
 <style>
   .container {
     text-align: center;
-    max-width: 300px; /* Adjust the max-width as needed */
+    max-width: 300px;
     margin: 0 auto;
     padding: 1em;
     background-color: rgb(173, 168, 168);
-    border-radius: 5px; /* Optional: Add rounded corners to the container */
+    border-radius: 5px;
   }
 
   .success {

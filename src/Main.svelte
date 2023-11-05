@@ -17,7 +17,6 @@
 
 <div class="content">
   <Statusbox loggedInUser={registeredUsername} />
-  <!-- Other content here -->
 </div>
 <div transition:fade class="container">
   <div>
@@ -34,25 +33,23 @@
       <h2>{awardInfo.name}</h2>
       <img transition:fade src={awardInfo.imageUrl} alt="Trophy" />
       <p>{awardInfo.description}</p>
-      <!-- Add other relevant details here -->
     </div>
   {/if}
 </div>
 
 <style>
   .container {
-    /* Adjust the max-width as needed */
     margin: 0 auto;
     padding: 1em;
     background-color: rgb(173, 168, 168);
-    border-radius: 20px; /* Optional: Add rounded corners to the container */
+    border-radius: 20px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   }
 
   img {
-    max-width: 100%; /* Allow the image to scale down */
-    height: auto; /* Maintain the image's aspect ratio */
-    width: 150px; /* Set a maximum width */
+    max-width: 100%;
+    height: auto;
+    width: 150px;
     border-radius: 5px;
   }
 </style>

@@ -1,4 +1,5 @@
 <script>
+  //Yksinkertainen header-komponentti
 </script>
 
 <div class="header">
@@ -17,8 +18,8 @@
   }
 
   .logo {
-    max-width: 100%; /* Allow the image to scale down */
-    height: auto; /* Maintain the image's aspect ratio */
-    width: 150px; /* Set a maximum width */
+    max-width: 100%;
+    height: auto;
+    width: 150px;
   }
 </style>

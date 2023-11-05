@@ -19,16 +19,22 @@
     position: fixed;
     top: 10px;
     right: 10px;
-    background-color: rgb(173, 168, 168);
+    background-color: #f9f9f9;
     padding: 10px;
-    border: 10px solid gray;
-    border-radius: 3px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 0.7em;
+  }
+
+  .status-box p {
+    margin: 0;
   }
 
   .logoutbutton {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     margin-top: 10px;
   }
 
@@ -36,6 +42,10 @@
     background: none;
     border: none;
     cursor: pointer;
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 5px;
   }
 
   .logoutbutton img {

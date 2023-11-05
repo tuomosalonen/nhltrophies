@@ -1,6 +1,9 @@
 <script>
+  //Sisäänkirjautumiskomponentti
+  import Button from './Button.svelte';
   import TextInput from './TextInput.svelte';
   import { loggedIn } from './stateStore.js';
+  import Modal from './Modal.svelte';
   import { onMount } from 'svelte';
 
   export let register;
@@ -11,35 +14,33 @@
   let password = '';
 
   let loginSuccess = false;
+  let loading = false;
+  let showModal = false;
   let error = '';
 
-  onMount(() => {
-    const unsubscribe = loggedIn.subscribe((value) => {
-      console.log('loggedIn is ' + value); // The value of loggedIn when the component is mounted
-    });
-
-    return unsubscribe;
-  });
-
   const handleLogin = () => {
+    loading = true;
+    //funktio, jossa käsitellään sisäänkirjautuminen
     if (
+      //username ja password on sidottu textinput-kenttiin,
+      //katsotaan että arvot mätsäävät rekisteröityneeseen käyttäjään eikä kentät ole tyhjiä
       username === registeredUsername &&
       password === registeredPassword &&
       username !== '' &&
       password !== ''
     ) {
       setTimeout(() => {
-        loggedIn.set(true);
+        loggedIn.set(true); //päivitetään store
         loginSuccess = true;
-        setTimeout(() => {}, 2000);
+        showModal = true;
+        loading = false;
       }, 2000);
+      // Set showModal to true for displaying the modal
     } else {
       error = 'Invalid username or password';
+      loading = false;
     }
   };
-
-  $: console.log('Username is ' + username);
-  $: console.log('Registered username is ' + registeredUsername);
 </script>
 
 <div class="container">
@@ -59,18 +60,25 @@
       bind:value={username}
     />
     <TextInput
+      id="pword"
       type="password"
       label="Password"
       placeholder="Enter password"
       errmsg="Invalid password"
       bind:value={password}
     />
+    <Button text="Login" on:click={handleLogin} />
 
-    <button on:click={handleLogin} type="submit">Login</button>
-    <div class="link-button">
-      <button on:click={register}>New user? Register here!</button>
-    </div>
+    <Button text="New user? Register here!" on:click={register} />
   </form>
+  {#if showModal}
+    <Modal />
+  {/if}
+
+  {#if loading}
+    <div class="backdrop" />
+    <div class="loader" />
+  {/if}
 </div>
 
 <style>
@@ -82,22 +90,43 @@
     background-color: rgb(173, 168, 168);
     border-radius: 5px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    position: relative;
   }
 
-  .link-button {
-    background: none;
-    border: none;
-    color: #ffcb00; /* or your desired link color */
-    cursor: pointer;
-    text-decoration: underline;
-    padding: 0;
-    cursor: pointer;
-    transition: font-size 0.3s ease-in-out, color 0.3s ease-in-out,
-      text-decoration 0.3s ease-in-out;
+  .loader {
+    border: 8px solid #f3f3f3; /*Chat GPT:n generoima luokka */
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
   }
 
-  .link-button:hover {
-    color: #ffffff;
+  .backdrop {
+    /*Chat GPT:n generoima luokka */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    z-index: 1;
+  }
+
+  @keyframes spin {
+    /*Chat GPT:n generoima spinneri */
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 
   .error {
