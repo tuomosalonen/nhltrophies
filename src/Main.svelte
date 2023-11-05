@@ -8,10 +8,9 @@
 
   let awardInfo = {};
 
+  //Funktio, joka käsittelee palkinnon valinnan select-valikossa
   const handleSelection = () => {
     awardInfo = awards.find((award) => award.name === selectedAward);
-
-    console.log(selectedAward);
   };
 </script>
 
@@ -28,6 +27,7 @@
     </select>
   </div>
 
+  <!-- Tarkistetaan ettei awardInfo-objekti ole tyhjä ja näytetään palkinnon nimi, kuva sekä kuvaus-->
   {#if Object.keys(awardInfo).length !== 0}
     <div>
       <h2>{awardInfo.name}</h2>

@@ -35,7 +35,6 @@
         showModal = true;
         loading = false;
       }, 2000);
-      // Set showModal to true for displaying the modal
     } else {
       error = 'Invalid username or password';
       loading = false;

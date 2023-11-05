@@ -85,10 +85,6 @@
     border-radius: 5px;
   }
 
-  .success {
-    color: green;
-  }
-
   .error {
     color: red;
   }

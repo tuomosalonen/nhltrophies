@@ -41,8 +41,8 @@
   }
 
   label {
-    display: block; /* Display labels on separate lines */
-    margin-bottom: 8px; /* Add some space between labels and input fields */
+    display: block;
+    margin-bottom: 8px;
     float: left;
     font-weight: bold;
   }
